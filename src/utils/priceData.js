@@ -17,30 +17,55 @@ export const fetchTokenPrices = async (tokenIds) => {
   }
 };
 
+const dexes = [
+  { name: 'Uniswap V3', network: 'Ethereum Mainnet' },
+  { name: 'PancakeSwap', network: 'BNB Chain' },
+  { name: 'SushiSwap', network: 'Polygon' },
+  { name: 'QuickSwap', network: 'Polygon' },
+  { name: 'Trader Joe', network: 'Avalanche' },
+];
+
+const stablecoins = ['USDT', 'USDC', 'DAI', 'BUSD'];
+
 export const getArbitrageOpportunities = (prices) => {
   const opportunities = [];
-  const networks = ['ethereum', 'polygon', 'bsc', 'arbitrum', 'optimism', 'avalanche'];
 
   for (const baseToken in prices) {
-    for (const quoteToken in prices) {
-      if (baseToken !== quoteToken) {
-        const basePrice = prices[baseToken].usd;
-        const quotePrice = prices[quoteToken].usd;
-        const priceDiff = Math.abs(basePrice / quotePrice - 1);
+    const basePrice = prices[baseToken].usd;
 
-        if (priceDiff > 0.01) { // 1% threshold for arbitrage
+    stablecoins.forEach((stablecoin) => {
+      const dex1 = dexes[Math.floor(Math.random() * dexes.length)];
+      const dex2 = dexes[Math.floor(Math.random() * dexes.length)];
+
+      if (dex1 !== dex2) {
+        const price1 = basePrice * (1 + (Math.random() * 0.02 - 0.01)); // +/- 1%
+        const price2 = basePrice * (1 + (Math.random() * 0.02 - 0.01)); // +/- 1%
+
+        const priceDiff = Math.abs(price1 - price2);
+        const profitPercent = (priceDiff / Math.min(price1, price2)) * 100;
+
+        if (profitPercent > 0.5) { // Only show opportunities with > 0.5% profit
           opportunities.push({
             type: 'Price Discrepancy',
-            tokenPair: `${baseToken.toUpperCase()}/${quoteToken.toUpperCase()}`,
-            networks: [networks[Math.floor(Math.random() * networks.length)], networks[Math.floor(Math.random() * networks.length)]],
-            route: ['DEX A', 'DEX B'],
-            profitUSD: priceDiff * 1000, // Assuming $1000 trade size
-            estimatedFees: Math.random() * 10 + 5, // Random fee between $5 and $15
+            baseToken: baseToken.toUpperCase(),
+            quoteToken: stablecoin,
+            dex1: {
+              name: dex1.name,
+              network: dex1.network,
+              price: price1.toFixed(2),
+            },
+            dex2: {
+              name: dex2.name,
+              network: dex2.network,
+              price: price2.toFixed(2),
+            },
+            profitPercent: profitPercent.toFixed(2),
+            estimatedProfit: (priceDiff * 100).toFixed(2), // Assuming 100 units traded
           });
         }
       }
-    }
+    });
   }
 
-  return opportunities.sort((a, b) => b.profitUSD - a.profitUSD);
+  return opportunities.sort((a, b) => parseFloat(b.profitPercent) - parseFloat(a.profitPercent));
 };

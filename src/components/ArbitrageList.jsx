@@ -7,23 +7,25 @@ const ArbitrageList = ({ opportunities }) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Type</TableHead>
             <TableHead>Token Pair</TableHead>
-            <TableHead>Networks</TableHead>
-            <TableHead>Route</TableHead>
-            <TableHead>Profit (USD)</TableHead>
-            <TableHead>Est. Fees (USD)</TableHead>
+            <TableHead>DEX 1</TableHead>
+            <TableHead>DEX 2</TableHead>
+            <TableHead>Profit %</TableHead>
+            <TableHead>Est. Profit (USD)</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {opportunities.map((opp, index) => (
             <TableRow key={index}>
-              <TableCell>{opp.type}</TableCell>
-              <TableCell>{opp.tokenPair}</TableCell>
-              <TableCell>{opp.networks.join(', ')}</TableCell>
-              <TableCell>{opp.route.join(' → ')}</TableCell>
-              <TableCell>${opp.profitUSD.toFixed(2)}</TableCell>
-              <TableCell>${opp.estimatedFees.toFixed(2)}</TableCell>
+              <TableCell>{`${opp.baseToken}/${opp.quoteToken}`}</TableCell>
+              <TableCell>
+                {`${opp.dex1.name} on ${opp.dex1.network} - $${opp.dex1.price} (${opp.dex1.price} ${opp.quoteToken}/${opp.baseToken})`}
+              </TableCell>
+              <TableCell>
+                {`${opp.dex2.name} on ${opp.dex2.network} - $${opp.dex2.price} (${opp.dex2.price} ${opp.quoteToken}/${opp.baseToken})`}
+              </TableCell>
+              <TableCell>{`${opp.profitPercent}%`}</TableCell>
+              <TableCell>${opp.estimatedProfit}</TableCell>
             </TableRow>
           ))}
         </TableBody>
