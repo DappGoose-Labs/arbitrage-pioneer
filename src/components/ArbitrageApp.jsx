@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ArbitrageList from './ArbitrageList';
-import FlashloanCalculator from './FlashloanCalculator';
+import ArbitrageCalculator from './ArbitrageCalculator';
 import { fetchTokenPrices, getArbitrageOpportunities } from '../utils/priceData';
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 const ArbitrageApp = () => {
   const [opportunities, setOpportunities] = useState([]);
   const [degenMode, setDegenMode] = useState(false);
+  const [selectedOpportunity, setSelectedOpportunity] = useState(null);
 
   const { data: prices, isLoading, error, refetch } = useQuery({
     queryKey: ['tokenPrices', degenMode],
@@ -21,6 +22,7 @@ const ArbitrageApp = () => {
     if (prices) {
       const newOpportunities = getArbitrageOpportunities(prices, degenMode);
       setOpportunities(newOpportunities);
+      setSelectedOpportunity(newOpportunities[0] || null);
     }
   }, [prices, degenMode]);
 
@@ -30,6 +32,10 @@ const ArbitrageApp = () => {
 
   const handleDegenModeToggle = () => {
     setDegenMode(!degenMode);
+  };
+
+  const handleOpportunitySelect = (opportunity) => {
+    setSelectedOpportunity(opportunity);
   };
 
   if (isLoading) return <div className="text-center mt-8">Loading price data...</div>;
@@ -51,10 +57,13 @@ const ArbitrageApp = () => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <ArbitrageList opportunities={opportunities} />
+          <ArbitrageList 
+            opportunities={opportunities} 
+            onSelectOpportunity={handleOpportunitySelect}
+          />
         </div>
         <div>
-          <FlashloanCalculator />
+          <ArbitrageCalculator opportunity={selectedOpportunity} />
         </div>
       </div>
     </div>

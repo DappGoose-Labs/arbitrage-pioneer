@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-const ArbitrageList = ({ opportunities }) => {
+const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
   const formatPrice = (price) => {
     return typeof price === 'number' ? price.toFixed(2) : 'N/A';
   };
@@ -28,7 +28,11 @@ const ArbitrageList = ({ opportunities }) => {
         </TableHeader>
         <TableBody>
           {opportunities.map((opp, index) => (
-            <TableRow key={index}>
+            <TableRow 
+              key={index} 
+              className="cursor-pointer hover:bg-gray-100"
+              onClick={() => onSelectOpportunity(opp)}
+            >
               <TableCell>{opp.token}</TableCell>
               <TableCell>
                 {`${opp.dex1.name} on ${opp.dex1.network} - $${formatPrice(opp.dex1.price)} (${formatPrice(opp.dex1.price)} ${opp.dex1.pair}/${opp.token})`}
