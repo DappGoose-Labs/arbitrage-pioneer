@@ -1,24 +1,33 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const ArbitrageList = ({ opportunities }) => {
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-4">Profitable Arbitrage Opportunities</h2>
-      {opportunities.map((opp, index) => (
-        <Card key={index} className="mb-4">
-          <CardHeader>
-            <CardTitle className="text-lg">
-              {opp.type} - Profit: ${opp.profitUSD.toFixed(2)}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p><strong>Route:</strong> {opp.route.join(' → ')}</p>
-            <p><strong>Networks:</strong> {opp.networks.join(', ')}</p>
-            <p><strong>Estimated Fees:</strong> ${opp.estimatedFees.toFixed(2)}</p>
-          </CardContent>
-        </Card>
-      ))}
+    <div className="overflow-x-auto">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Type</TableHead>
+            <TableHead>Token Pair</TableHead>
+            <TableHead>Networks</TableHead>
+            <TableHead>Route</TableHead>
+            <TableHead>Profit (USD)</TableHead>
+            <TableHead>Est. Fees (USD)</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {opportunities.map((opp, index) => (
+            <TableRow key={index}>
+              <TableCell>{opp.type}</TableCell>
+              <TableCell>{opp.tokenPair}</TableCell>
+              <TableCell>{opp.networks.join(', ')}</TableCell>
+              <TableCell>{opp.route.join(' → ')}</TableCell>
+              <TableCell>${opp.profitUSD.toFixed(2)}</TableCell>
+              <TableCell>${opp.estimatedFees.toFixed(2)}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 };

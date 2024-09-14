@@ -16,9 +16,13 @@ const ArbitrageApp = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Arbitrage Opportunities</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <ArbitrageList opportunities={opportunities} />
-        <FlashloanCalculator />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <ArbitrageList opportunities={opportunities} />
+        </div>
+        <div>
+          <FlashloanCalculator />
+        </div>
       </div>
     </div>
   );
