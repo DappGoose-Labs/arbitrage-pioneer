@@ -30,14 +30,17 @@ const stablecoins = ['USDT', 'USDC', 'DAI', 'BUSD'];
 export const getArbitrageOpportunities = (prices) => {
   const opportunities = [];
 
-  for (const baseToken in prices) {
-    const basePrice = prices[baseToken].usd;
+  for (const token in prices) {
+    const basePrice = prices[token].usd;
 
-    stablecoins.forEach((stablecoin) => {
-      const dex1 = dexes[Math.floor(Math.random() * dexes.length)];
-      const dex2 = dexes[Math.floor(Math.random() * dexes.length)];
+    for (let i = 0; i < dexes.length; i++) {
+      for (let j = i + 1; j < dexes.length; j++) {
+        const dex1 = dexes[i];
+        const dex2 = dexes[j];
 
-      if (dex1 !== dex2) {
+        const stablecoin1 = stablecoins[Math.floor(Math.random() * stablecoins.length)];
+        const stablecoin2 = stablecoins[Math.floor(Math.random() * stablecoins.length)];
+
         const price1 = basePrice * (1 + (Math.random() * 0.02 - 0.01)); // +/- 1%
         const price2 = basePrice * (1 + (Math.random() * 0.02 - 0.01)); // +/- 1%
 
@@ -46,26 +49,25 @@ export const getArbitrageOpportunities = (prices) => {
 
         if (profitPercent > 0.5) { // Only show opportunities with > 0.5% profit
           opportunities.push({
-            type: 'Price Discrepancy',
-            baseToken: baseToken.toUpperCase(),
-            quoteToken: stablecoin,
+            token: token.toUpperCase(),
             dex1: {
               name: dex1.name,
               network: dex1.network,
-              price: price1.toFixed(2),
+              price: price1,
+              pair: stablecoin1
             },
             dex2: {
               name: dex2.name,
               network: dex2.network,
-              price: price2.toFixed(2),
+              price: price2,
+              pair: stablecoin2
             },
-            profitPercent: profitPercent.toFixed(2),
-            estimatedProfit: (priceDiff * 100).toFixed(2), // Assuming 100 units traded
+            profitPercent: profitPercent,
           });
         }
       }
-    });
+    }
   }
 
-  return opportunities.sort((a, b) => parseFloat(b.profitPercent) - parseFloat(a.profitPercent));
+  return opportunities.sort((a, b) => b.profitPercent - a.profitPercent);
 };
