@@ -2,6 +2,15 @@ import axios from 'axios';
 
 const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3';
 
+// Token smart contract addresses (example addresses, replace with actual ones)
+const tokenAddresses = {
+  'bitcoin': '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', // WBTC on Ethereum
+  'ethereum': '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH on Ethereum
+  'binancecoin': '0xB8c77482e45F1F44dE1745F52C74426C631bDD52', // BNB on Ethereum
+  'matic-network': '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0', // MATIC on Ethereum
+  'avalanche-2': '0x85f138bfEE4ef8e540890CFb48F620571d67Eda3', // WAVAX on Ethereum
+};
+
 export const fetchTokenPrices = async (tokenIds, degenMode) => {
   try {
     if (degenMode) {
@@ -47,6 +56,13 @@ const dexes = [
 
 const stablecoins = ['USDT', 'USDC', 'DAI', 'BUSD'];
 
+const stablecoinAddresses = {
+  'USDT': '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  'USDC': '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+  'DAI': '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+  'BUSD': '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
+};
+
 export const getArbitrageOpportunities = (prices, degenMode) => {
   const opportunities = [];
 
@@ -63,7 +79,6 @@ export const getArbitrageOpportunities = (prices, degenMode) => {
 
         let price1, price2;
         if (degenMode) {
-          // In degen mode, introduce higher volatility
           price1 = basePrice * (1 + (Math.random() * 0.1 - 0.05)); // +/- 5%
           price2 = basePrice * (1 + (Math.random() * 0.1 - 0.05)); // +/- 5%
         } else {
@@ -74,20 +89,23 @@ export const getArbitrageOpportunities = (prices, degenMode) => {
         const priceDiff = Math.abs(price1 - price2);
         const profitPercent = (priceDiff / Math.min(price1, price2)) * 100;
 
-        if (profitPercent > (degenMode ? 1 : 0.5)) { // Higher threshold for degen mode
+        if (profitPercent > (degenMode ? 1 : 0.5)) {
           opportunities.push({
             token: token.toUpperCase(),
+            tokenAddress: tokenAddresses[token],
             dex1: {
               name: dex1.name,
               network: dex1.network,
               price: price1,
-              pair: stablecoin1
+              pair: stablecoin1,
+              pairAddress: stablecoinAddresses[stablecoin1]
             },
             dex2: {
               name: dex2.name,
               network: dex2.network,
               price: price2,
-              pair: stablecoin2
+              pair: stablecoin2,
+              pairAddress: stablecoinAddresses[stablecoin2]
             },
             profitPercent: profitPercent,
           });

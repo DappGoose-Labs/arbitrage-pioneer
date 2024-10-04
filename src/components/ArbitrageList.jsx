@@ -17,9 +17,7 @@ const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
     return profitPercent.toFixed(2);
   };
 
-  const getDexLink = (dex, token, pair) => {
-    // This is a simplified example. In a real-world scenario, you'd need to implement
-    // proper URL generation for each DEX based on their specific URL structures.
+  const getDexLink = (dex, tokenAddress, pairAddress) => {
     const baseUrls = {
       'Uniswap V3': 'https://app.uniswap.org/#/swap?inputCurrency=',
       'PancakeSwap': 'https://pancakeswap.finance/swap?inputCurrency=',
@@ -29,7 +27,7 @@ const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
     };
 
     const baseUrl = baseUrls[dex.name] || '#';
-    return `${baseUrl}${pair}&outputCurrency=${token}`;
+    return `${baseUrl}${pairAddress}&outputCurrency=${tokenAddress}`;
   };
 
   return (
@@ -66,7 +64,7 @@ const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
                     size="sm"
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.open(getDexLink(opp.dex1, opp.token, opp.dex1.pair), '_blank');
+                      window.open(getDexLink(opp.dex1, opp.tokenAddress, opp.dex1.pairAddress), '_blank');
                     }}
                   >
                     <ExternalLink className="h-4 w-4 mr-1" />
@@ -77,7 +75,7 @@ const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
                     size="sm"
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.open(getDexLink(opp.dex2, opp.token, opp.dex2.pair), '_blank');
+                      window.open(getDexLink(opp.dex2, opp.tokenAddress, opp.dex2.pairAddress), '_blank');
                     }}
                   >
                     <ExternalLink className="h-4 w-4 mr-1" />
