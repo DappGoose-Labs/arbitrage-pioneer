@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ArbitrageList from './ArbitrageList';
 import ArbitrageCalculator from './ArbitrageCalculator';
-import InfoPanel from './InfoPanel';
 import { fetchTokenPrices, getArbitrageOpportunities } from '../utils/priceData';
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -13,23 +12,25 @@ const ArbitrageApp = () => {
   const [degenMode, setDegenMode] = useState(false);
   const [selectedOpportunity, setSelectedOpportunity] = useState(null);
 
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['arbitrageOpportunities', degenMode],
-    queryFn: () => fetchTokenPrices([], degenMode),
-    refetchInterval: 60000,
+  const { data: prices, isLoading, error, refetch } = useQuery({
+    queryKey: ['tokenPrices', degenMode],
+    queryFn: () => fetchTokenPrices(['bitcoin', 'ethereum', 'binancecoin', 'matic-network', 'avalanche-2'], degenMode),
+    refetchInterval: 30000, // Refetch every 30 seconds
     retry: 3,
     onError: (error) => {
-      console.error('Error fetching arbitrage opportunities:', error);
+      console.error('Error fetching token prices:', error);
     },
   });
 
   useEffect(() => {
-    if (data) {
-      const filteredOpportunities = getArbitrageOpportunities(data, degenMode);
-      setOpportunities(filteredOpportunities);
-      setSelectedOpportunity(filteredOpportunities[0] || null);
+    if (prices) {
+      console.log('Received prices:', prices);
+      const newOpportunities = getArbitrageOpportunities(prices, degenMode);
+      console.log('New opportunities:', newOpportunities);
+      setOpportunities(newOpportunities);
+      setSelectedOpportunity(newOpportunities[0] || null);
     }
-  }, [data, degenMode]);
+  }, [prices, degenMode]);
 
   const handleRefresh = () => {
     refetch();
@@ -43,8 +44,8 @@ const ArbitrageApp = () => {
     setSelectedOpportunity(opportunity);
   };
 
-  if (isLoading) return <div className="text-center mt-8">Loading arbitrage opportunities...</div>;
-  if (error) return <div className="text-center mt-8 text-red-500">Error fetching arbitrage opportunities: {error.message}</div>;
+  if (isLoading) return <div className="text-center mt-8">Loading price data...</div>;
+  if (error) return <div className="text-center mt-8 text-red-500">Error fetching price data: {error.message}</div>;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -67,9 +68,8 @@ const ArbitrageApp = () => {
             onSelectOpportunity={handleOpportunitySelect}
           />
         </div>
-        <div className="space-y-8">
+        <div>
           <ArbitrageCalculator opportunity={selectedOpportunity} />
-          <InfoPanel opportunity={selectedOpportunity} />
         </div>
       </div>
     </div>
