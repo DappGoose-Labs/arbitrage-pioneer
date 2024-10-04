@@ -19,17 +19,30 @@ export const fetchTokenPrices = async (tokenIds, degenMode) => {
         .filter(token => token.market_cap_rank > 100 || token.total_volume < 1000000)
         .slice(0, 10);
       return degenTokens.reduce((acc, token) => {
-        acc[token.id] = { usd: token.current_price };
+        acc[token.id] = { 
+          usd: token.current_price,
+          contract_address: token.contract_address || 'N/A'
+        };
         return acc;
       }, {});
     } else {
-      const response = await axios.get(`${COINGECKO_API_URL}/simple/price`, {
+      const response = await axios.get(`${COINGECKO_API_URL}/coins/markets`, {
         params: {
+          vs_currency: 'usd',
           ids: tokenIds.join(','),
-          vs_currencies: 'usd',
+          order: 'market_cap_desc',
+          per_page: 250,
+          page: 1,
+          sparkline: false,
         },
       });
-      return response.data;
+      return response.data.reduce((acc, token) => {
+        acc[token.id] = { 
+          usd: token.current_price,
+          contract_address: token.contract_address || 'N/A'
+        };
+        return acc;
+      }, {});
     }
   } catch (error) {
     console.error('Error fetching token prices:', error);
@@ -45,13 +58,19 @@ const dexes = [
   { name: 'Trader Joe', network: 'Avalanche' },
 ];
 
-const stablecoins = ['USDT', 'USDC', 'DAI', 'BUSD'];
+const stablecoins = [
+  { symbol: 'USDT', address: '0xdac17f958d2ee523a2206206994597c13d831ec7' },
+  { symbol: 'USDC', address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' },
+  { symbol: 'DAI', address: '0x6b175474e89094c44da98b954eedeac495271d0f' },
+  { symbol: 'BUSD', address: '0x4fabb145d64652a948d72533023f6e7a623c7c53' },
+];
 
 export const getArbitrageOpportunities = (prices, degenMode) => {
   const opportunities = [];
 
   for (const token in prices) {
     const basePrice = prices[token].usd;
+    const tokenAddress = prices[token].contract_address;
 
     for (let i = 0; i < dexes.length; i++) {
       for (let j = i + 1; j < dexes.length; j++) {
@@ -77,6 +96,7 @@ export const getArbitrageOpportunities = (prices, degenMode) => {
         if (profitPercent > (degenMode ? 1 : 0.5)) { // Higher threshold for degen mode
           opportunities.push({
             token: token.toUpperCase(),
+            tokenAddress: tokenAddress,
             dex1: {
               name: dex1.name,
               network: dex1.network,
