@@ -19,12 +19,12 @@ const InfoPanel = ({ opportunity }) => {
           <p><strong>Network:</strong> {opportunity.dex1.network}</p>
           <p><strong>Price:</strong> ${opportunity.dex1.price.toFixed(4)}</p>
           <p><strong>Trading Pair:</strong> {opportunity.dex1.pair.symbol}/{opportunity.token}</p>
-          <p><strong>Pair Address:</strong> {opportunity.dex1.pair.address || 'Not available'}</p>
+          <p><strong>Pair Token Address:</strong> {opportunity.dex1.pair.address || 'Not available'}</p>
           <h3 className="font-semibold mt-4">DEX 2: {opportunity.dex2.name}</h3>
           <p><strong>Network:</strong> {opportunity.dex2.network}</p>
           <p><strong>Price:</strong> ${opportunity.dex2.price.toFixed(4)}</p>
           <p><strong>Trading Pair:</strong> {opportunity.dex2.pair.symbol}/{opportunity.token}</p>
-          <p><strong>Pair Address:</strong> {opportunity.dex2.pair.address || 'Not available'}</p>
+          <p><strong>Pair Token Address:</strong> {opportunity.dex2.pair.address || 'Not available'}</p>
         </div>
       </CardContent>
     </Card>
