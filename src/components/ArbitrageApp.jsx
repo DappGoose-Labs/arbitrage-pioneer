@@ -16,11 +16,17 @@ const ArbitrageApp = () => {
     queryKey: ['tokenPrices', degenMode],
     queryFn: () => fetchTokenPrices(['bitcoin', 'ethereum', 'binancecoin', 'matic-network', 'avalanche-2'], degenMode),
     refetchInterval: 30000, // Refetch every 30 seconds
+    retry: 3,
+    onError: (error) => {
+      console.error('Error fetching token prices:', error);
+    },
   });
 
   useEffect(() => {
     if (prices) {
+      console.log('Received prices:', prices);
       const newOpportunities = getArbitrageOpportunities(prices, degenMode);
+      console.log('New opportunities:', newOpportunities);
       setOpportunities(newOpportunities);
       setSelectedOpportunity(newOpportunities[0] || null);
     }

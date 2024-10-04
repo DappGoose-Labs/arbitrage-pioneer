@@ -26,6 +26,7 @@ export const fetchTokenPrices = async (tokenIds, degenMode) => {
         return acc;
       }, {});
     } else {
+      console.log('Fetching token prices for:', tokenIds);
       const response = await axios.get(`${COINGECKO_API_URL}/coins/markets`, {
         params: {
           vs_currency: 'usd',
@@ -36,6 +37,7 @@ export const fetchTokenPrices = async (tokenIds, degenMode) => {
           sparkline: false,
         },
       });
+      console.log('API response:', response.data);
       return response.data.reduce((acc, token) => {
         acc[token.id] = { 
           usd: token.current_price,
@@ -46,6 +48,10 @@ export const fetchTokenPrices = async (tokenIds, degenMode) => {
     }
   } catch (error) {
     console.error('Error fetching token prices:', error);
+    if (error.response) {
+      console.error('Response data:', error.response.data);
+      console.error('Response status:', error.response.status);
+    }
     return {};
   }
 };
@@ -66,6 +72,7 @@ const stablecoins = [
 ];
 
 export const getArbitrageOpportunities = (prices, degenMode) => {
+  console.log('Generating arbitrage opportunities. Prices:', prices);
   const opportunities = [];
 
   for (const token in prices) {
@@ -82,7 +89,6 @@ export const getArbitrageOpportunities = (prices, degenMode) => {
 
         let price1, price2;
         if (degenMode) {
-          // In degen mode, introduce higher volatility
           price1 = basePrice * (1 + (Math.random() * 0.1 - 0.05)); // +/- 5%
           price2 = basePrice * (1 + (Math.random() * 0.1 - 0.05)); // +/- 5%
         } else {
@@ -93,7 +99,7 @@ export const getArbitrageOpportunities = (prices, degenMode) => {
         const priceDiff = Math.abs(price1 - price2);
         const profitPercent = (priceDiff / Math.min(price1, price2)) * 100;
 
-        if (profitPercent > (degenMode ? 1 : 0.5)) { // Higher threshold for degen mode
+        if (profitPercent > (degenMode ? 1 : 0.5)) {
           opportunities.push({
             token: token.toUpperCase(),
             tokenAddress: tokenAddress,
@@ -116,5 +122,6 @@ export const getArbitrageOpportunities = (prices, degenMode) => {
     }
   }
 
+  console.log('Generated opportunities:', opportunities.length);
   return opportunities.sort((a, b) => b.profitPercent - a.profitPercent);
 };
