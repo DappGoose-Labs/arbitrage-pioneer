@@ -43,7 +43,7 @@ export const fetchTokenPrices = async (tokenIds, degenMode) => {
 
     return opportunities;
   } catch (error) {
-    console.error('Error fetching token prices:', error);
+    console.error('Error fetching token prices:', error.response ? error.response.data : error.message);
     return [];
   }
 };
