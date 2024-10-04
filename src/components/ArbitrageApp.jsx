@@ -13,25 +13,23 @@ const ArbitrageApp = () => {
   const [degenMode, setDegenMode] = useState(false);
   const [selectedOpportunity, setSelectedOpportunity] = useState(null);
 
-  const { data: prices, isLoading, error, refetch } = useQuery({
-    queryKey: ['tokenPrices', degenMode],
-    queryFn: () => fetchTokenPrices(['bitcoin', 'ethereum', 'binancecoin', 'matic-network', 'avalanche-2'], degenMode),
-    refetchInterval: 30000,
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['arbitrageOpportunities', degenMode],
+    queryFn: () => fetchTokenPrices([], degenMode),
+    refetchInterval: 60000,
     retry: 3,
     onError: (error) => {
-      console.error('Error fetching token prices:', error);
+      console.error('Error fetching arbitrage opportunities:', error);
     },
   });
 
   useEffect(() => {
-    if (prices) {
-      console.log('Received prices:', prices);
-      const newOpportunities = getArbitrageOpportunities(prices, degenMode);
-      console.log('New opportunities:', newOpportunities);
-      setOpportunities(newOpportunities);
-      setSelectedOpportunity(newOpportunities[0] || null);
+    if (data) {
+      const filteredOpportunities = getArbitrageOpportunities(data, degenMode);
+      setOpportunities(filteredOpportunities);
+      setSelectedOpportunity(filteredOpportunities[0] || null);
     }
-  }, [prices, degenMode]);
+  }, [data, degenMode]);
 
   const handleRefresh = () => {
     refetch();
@@ -45,8 +43,8 @@ const ArbitrageApp = () => {
     setSelectedOpportunity(opportunity);
   };
 
-  if (isLoading) return <div className="text-center mt-8">Loading price data...</div>;
-  if (error) return <div className="text-center mt-8 text-red-500">Error fetching price data: {error.message}</div>;
+  if (isLoading) return <div className="text-center mt-8">Loading arbitrage opportunities...</div>;
+  if (error) return <div className="text-center mt-8 text-red-500">Error fetching arbitrage opportunities: {error.message}</div>;
 
   return (
     <div className="container mx-auto px-4 py-8">

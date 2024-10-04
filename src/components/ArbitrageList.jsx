@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ExternalLink } from 'lucide-react';
 
 const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
   const formatPrice = (price) => {
@@ -35,10 +36,16 @@ const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
             >
               <TableCell>{opp.token}</TableCell>
               <TableCell>
-                {`${opp.dex1.name} on ${opp.dex1.network} - $${formatPrice(opp.dex1.price)}`}
+                <a href={opp.dex1.url} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                  {`${opp.dex1.name} on ${opp.dex1.network} - $${formatPrice(opp.dex1.price)}`}
+                  <ExternalLink className="ml-1 h-4 w-4" />
+                </a>
               </TableCell>
               <TableCell>
-                {`${opp.dex2.name} on ${opp.dex2.network} - $${formatPrice(opp.dex2.price)}`}
+                <a href={opp.dex2.url} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                  {`${opp.dex2.name} on ${opp.dex2.network} - $${formatPrice(opp.dex2.price)}`}
+                  <ExternalLink className="ml-1 h-4 w-4" />
+                </a>
               </TableCell>
               <TableCell>{`${calculateProfitPercent(opp.dex1.price, opp.dex2.price)}%`}</TableCell>
             </TableRow>

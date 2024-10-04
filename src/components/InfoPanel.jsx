@@ -1,30 +1,36 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ExternalLink } from 'lucide-react';
 
 const InfoPanel = ({ opportunity }) => {
   if (!opportunity) {
     return null;
   }
 
+  const geckoTerminalUrl = `https://www.geckoterminal.com/eth/tokens/${opportunity.tokenAddress}`;
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Token Information</CardTitle>
+        <CardTitle>Arbitrage Instructions</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
-          <p><strong>Token:</strong> {opportunity.token}</p>
-          <p><strong>Token Address:</strong> {opportunity.tokenAddress || 'Not available'}</p>
-          <h3 className="font-semibold mt-4">DEX 1: {opportunity.dex1.name}</h3>
-          <p><strong>Network:</strong> {opportunity.dex1.network}</p>
-          <p><strong>Price:</strong> ${opportunity.dex1.price.toFixed(4)}</p>
-          <p><strong>Trading Pair:</strong> {opportunity.dex1.pair.symbol}/{opportunity.token}</p>
-          <p><strong>Pair Token Address:</strong> {opportunity.dex1.pair.address || 'Not available'}</p>
-          <h3 className="font-semibold mt-4">DEX 2: {opportunity.dex2.name}</h3>
-          <p><strong>Network:</strong> {opportunity.dex2.network}</p>
-          <p><strong>Price:</strong> ${opportunity.dex2.price.toFixed(4)}</p>
-          <p><strong>Trading Pair:</strong> {opportunity.dex2.pair.symbol}/{opportunity.token}</p>
-          <p><strong>Pair Token Address:</strong> {opportunity.dex2.pair.address || 'Not available'}</p>
+        <div className="space-y-4">
+          <h3 className="font-semibold">Steps to Execute Arbitrage:</h3>
+          <ol className="list-decimal list-inside space-y-2">
+            <li>Buy {opportunity.token} on {opportunity.dex1.name} at ${opportunity.dex1.price.toFixed(4)}</li>
+            <li>Transfer {opportunity.token} to {opportunity.dex2.network}</li>
+            <li>Sell {opportunity.token} on {opportunity.dex2.name} at ${opportunity.dex2.price.toFixed(4)}</li>
+            <li>Transfer profits back to your wallet</li>
+          </ol>
+          <p className="mt-4">
+            <strong>Token Info:</strong>
+            <a href={geckoTerminalUrl} target="_blank" rel="noopener noreferrer" className="flex items-center text-blue-500 hover:underline">
+              View {opportunity.token} on GeckoTerminal
+              <ExternalLink className="ml-1 h-4 w-4" />
+            </a>
+          </p>
+          <p><strong>Estimated Profit:</strong> ${((opportunity.dex2.price - opportunity.dex1.price) * 100).toFixed(2)} per 100 tokens</p>
         </div>
       </CardContent>
     </Card>
