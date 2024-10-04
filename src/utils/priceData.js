@@ -107,13 +107,19 @@ export const getArbitrageOpportunities = (prices, degenMode) => {
               name: dex1.name,
               network: dex1.network,
               price: price1,
-              pair: stablecoin1
+              pair: {
+                symbol: stablecoin1.symbol,
+                address: stablecoin1.address
+              }
             },
             dex2: {
               name: dex2.name,
               network: dex2.network,
               price: price2,
-              pair: stablecoin2
+              pair: {
+                symbol: stablecoin2.symbol,
+                address: stablecoin2.address
+              }
             },
             profitPercent: profitPercent,
           });
