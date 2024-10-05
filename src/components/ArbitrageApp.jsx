@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ArbitrageList from './ArbitrageList';
 import ArbitrageCalculator from './ArbitrageCalculator';
+import InfoPanel from './InfoPanel';
 import { fetchTokenPrices, getArbitrageOpportunities } from '../utils/priceData';
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -68,8 +69,9 @@ const ArbitrageApp = () => {
             onSelectOpportunity={handleOpportunitySelect}
           />
         </div>
-        <div>
+        <div className="space-y-8">
           <ArbitrageCalculator opportunity={selectedOpportunity} />
+          <InfoPanel opportunity={selectedOpportunity} />
         </div>
       </div>
     </div>
