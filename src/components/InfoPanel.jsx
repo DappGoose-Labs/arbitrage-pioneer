@@ -21,10 +21,15 @@ const InfoPanel = ({ opportunity }) => {
     };
     const network = networkMap[dex.network] || 'eth';
     
-    // Check if tokenAddress is valid before including it in the URL
-    const tokenPart = tokenAddress && tokenAddress !== 'N/A' ? `${tokenAddress}_` : '';
+    // Check if tokenAddress and pairAddress are valid before including them in the URL
+    const tokenPart = tokenAddress && tokenAddress !== 'N/A' ? `${tokenAddress.toLowerCase()}_` : '';
+    const pairPart = pairAddress && pairAddress !== 'N/A' ? pairAddress.toLowerCase() : '';
     
-    return `https://www.geckoterminal.com/${network}/pools/${tokenPart}${pairAddress.toLowerCase()}`;
+    if (!pairPart) {
+      return `https://www.geckoterminal.com/${network}/tokens/${tokenPart.slice(0, -1)}`;
+    }
+    
+    return `https://www.geckoterminal.com/${network}/pools/${tokenPart}${pairPart}`;
   };
 
   return (
