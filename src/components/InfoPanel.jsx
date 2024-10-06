@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ExternalLink } from 'lucide-react';
 
 const InfoPanel = ({ opportunity }) => {
   if (!opportunity) {
@@ -10,28 +9,6 @@ const InfoPanel = ({ opportunity }) => {
   // Determine which DEX has the lower price (buy) and which has the higher price (sell)
   const buyDex = opportunity.dex1.price < opportunity.dex2.price ? opportunity.dex1 : opportunity.dex2;
   const sellDex = opportunity.dex1.price < opportunity.dex2.price ? opportunity.dex2 : opportunity.dex1;
-
-  // Function to generate GeckoTerminal URL for a specific DEX and token pair
-  const getGeckoTerminalUrl = (dex, tokenAddress) => {
-    const networkMap = {
-      'Ethereum Mainnet': 'eth',
-      'BNB Chain': 'bsc',
-      'Polygon': 'polygon',
-      'Avalanche': 'avax',
-    };
-    const network = networkMap[dex.network] || 'eth';
-    
-    // Use the pair's liquidity pool address directly
-    const pairAddress = dex.pair.address.toLowerCase();
-    
-    // If we have a valid pair address, use it in the URL
-    if (pairAddress && pairAddress !== 'n/a') {
-      return `https://www.geckoterminal.com/${network}/pools/${pairAddress}`;
-    } else {
-      // Fallback to token page if pair address is not available
-      return `https://www.geckoterminal.com/${network}/tokens/${tokenAddress.toLowerCase()}`;
-    }
-  };
 
   return (
     <Card>
@@ -51,25 +28,9 @@ const InfoPanel = ({ opportunity }) => {
           </ol>
           <div className="mt-4">
             <strong>Token Pair Info:</strong>
-            <div className="flex flex-col space-y-2 mt-2">
-              <a
-                href={getGeckoTerminalUrl(buyDex, opportunity.tokenAddress)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-blue-500 hover:underline"
-              >
-                View {opportunity.token}/{buyDex.pair.symbol} on {buyDex.name} (GeckoTerminal)
-                <ExternalLink className="ml-1 h-4 w-4" />
-              </a>
-              <a
-                href={getGeckoTerminalUrl(sellDex, opportunity.tokenAddress)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-blue-500 hover:underline"
-              >
-                View {opportunity.token}/{sellDex.pair.symbol} on {sellDex.name} (GeckoTerminal)
-                <ExternalLink className="ml-1 h-4 w-4" />
-              </a>
+            <div className="mt-2">
+              <p>{opportunity.token}/{buyDex.pair.symbol} on {buyDex.name}</p>
+              <p>{opportunity.token}/{sellDex.pair.symbol} on {sellDex.name}</p>
             </div>
           </div>
           <p><strong>Estimated Profit:</strong> ${((sellDex.price - buyDex.price) * 100).toFixed(2)} per 100 tokens</p>
