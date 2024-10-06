@@ -20,7 +20,11 @@ const InfoPanel = ({ opportunity }) => {
       'Avalanche': 'avax',
     };
     const network = networkMap[dex.network] || 'eth';
-    return `https://www.geckoterminal.com/${network}/pools/${tokenAddress}_${pairAddress.toLowerCase()}`;
+    
+    // Check if tokenAddress is valid before including it in the URL
+    const tokenPart = tokenAddress && tokenAddress !== 'N/A' ? `${tokenAddress}_` : '';
+    
+    return `https://www.geckoterminal.com/${network}/pools/${tokenPart}${pairAddress.toLowerCase()}`;
   };
 
   return (
