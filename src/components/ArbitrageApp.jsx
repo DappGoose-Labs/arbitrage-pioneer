@@ -17,7 +17,10 @@ const ArbitrageApp = () => {
 
   const { data: prices, isLoading, error, refetch } = useQuery({
     queryKey: ['tokenPrices', degenMode],
-    queryFn: () => fetchTokenPrices(['bitcoin', 'ethereum', 'binancecoin', 'matic-network', 'avalanche-2'], degenMode),
+    queryFn: () => fetchTokenPrices([
+      'bitcoin', 'ethereum', 'binancecoin', 'matic-network', 'avalanche-2',
+      'arbitrum', 'zksync-era', 'bald', 'optimism', 'solana'
+    ], degenMode),
     refetchInterval: 30000, // Refetch every 30 seconds
     retry: 3,
     onError: (error) => {

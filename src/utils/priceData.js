@@ -62,6 +62,11 @@ const dexes = [
   { name: 'SushiSwap', network: 'Polygon' },
   { name: 'QuickSwap', network: 'Polygon' },
   { name: 'Trader Joe', network: 'Avalanche' },
+  { name: 'Camelot', network: 'Arbitrum' },
+  { name: 'SyncSwap', network: 'zkSync' },
+  { name: 'BaseSwap', network: 'Base' },
+  { name: 'Velodrome', network: 'Optimism' },
+  { name: 'Raydium', network: 'Solana' },
 ];
 
 const stablecoins = [
@@ -69,6 +74,11 @@ const stablecoins = [
   { symbol: 'USDC', address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' },
   { symbol: 'DAI', address: '0x6b175474e89094c44da98b954eedeac495271d0f' },
   { symbol: 'BUSD', address: '0x4fabb145d64652a948d72533023f6e7a623c7c53' },
+  { symbol: 'USDC.e', address: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8' }, // Arbitrum
+  { symbol: 'USDT', address: '0x7379a261bC347BDD445484A91648Abf4A2BDEe5E' }, // zkSync
+  { symbol: 'USDbC', address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA' }, // Base
+  { symbol: 'sUSD', address: '0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9' }, // Optimism
+  { symbol: 'USDC', address: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v' }, // Solana
 ];
 
 export const getArbitrageOpportunities = (prices, degenMode) => {
