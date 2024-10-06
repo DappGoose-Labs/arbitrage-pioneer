@@ -1,4 +1,4 @@
-import React from'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExternalLink } from 'lucide-react';
 
@@ -8,8 +8,8 @@ const InfoPanel = ({ opportunity }) => {
   }
 
   // Determine which DEX has the lower price (buy) and which has the higher price (sell)
-  const buyDex = opportunity.dex1.price < opportunity.dex2.price? opportunity.dex1 : opportunity.dex2;
-  const sellDex = opportunity.dex1.price < opportunity.dex2.price? opportunity.dex2 : opportunity.dex1;
+  const buyDex = opportunity.dex1.price < opportunity.dex2.price ? opportunity.dex1 : opportunity.dex2;
+  const sellDex = opportunity.dex1.price < opportunity.dex2.price ? opportunity.dex2 : opportunity.dex1;
 
   // Function to generate GeckoTerminal URL for a specific DEX and token pair
   const getGeckoTerminalUrl = (dex, tokenAddress, pairAddress) => {
@@ -20,7 +20,7 @@ const InfoPanel = ({ opportunity }) => {
       'Avalanche': 'avax',
     };
     const network = networkMap[dex.network] || 'eth';
-    return `https://www.geckoterminal.com/${network}/pools/${tokenAddress}_${pairAddress}`;
+    return `https://www.geckoterminal.com/${network}/pools/${tokenAddress}_${pairAddress.toLowerCase()}`;
   };
 
   return (
@@ -33,7 +33,7 @@ const InfoPanel = ({ opportunity }) => {
           <h3 className="font-semibold">Steps to Execute Arbitrage:</h3>
           <ol className="list-decimal list-inside space-y-2">
             <li>Buy {opportunity.token} on {buyDex.name} at ${buyDex.price.toFixed(4)}</li>
-            {buyDex.network!== sellDex.network && (
+            {buyDex.network !== sellDex.network && (
               <li>Transfer {opportunity.token} from {buyDex.network} to {sellDex.network}</li>
             )}
             <li>Sell {opportunity.token} on {sellDex.name} at ${sellDex.price.toFixed(4)}</li>
