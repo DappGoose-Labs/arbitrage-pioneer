@@ -15,11 +15,11 @@ const DonateModal = ({ isOpen, onClose }) => {
         <div className="space-y-4">
           <div>
             <h3 className="font-semibold">Bitcoin (BTC):</h3>
-            <p className="text-sm break-all">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</p>
+            <p className="text-sm break-all">bc1qtnm5n7ewj6hkz7ar6gg8xma726pea5pe95atkm</p>
           </div>
           <div>
-            <h3 className="font-semibold">Ethereum (ETH):</h3>
-            <p className="text-sm break-all">0x71C7656EC7ab88b098defB751B7401B5f6d8976F</p>
+            <h3 className="font-semibold">Ethereum (ETH) / ERC-20 (EVM):</h3>
+            <p className="text-sm break-all">0x18C6A47AcA1c6a237e53eD2fc3a8fB392c97169b</p>
           </div>
         </div>
         <Button onClick={onClose} className="mt-4">Close</Button>
