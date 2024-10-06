@@ -12,7 +12,7 @@ const InfoPanel = ({ opportunity }) => {
   const sellDex = opportunity.dex1.price < opportunity.dex2.price ? opportunity.dex2 : opportunity.dex1;
 
   // Function to generate GeckoTerminal URL for a specific DEX and token pair
-  const getGeckoTerminalUrl = (dex, tokenAddress, pairAddress) => {
+  const getGeckoTerminalUrl = (dex, tokenAddress) => {
     const networkMap = {
       'Ethereum Mainnet': 'eth',
       'BNB Chain': 'bsc',
@@ -21,15 +21,16 @@ const InfoPanel = ({ opportunity }) => {
     };
     const network = networkMap[dex.network] || 'eth';
     
-    // Check if tokenAddress and pairAddress are valid before including them in the URL
-    const tokenPart = tokenAddress && tokenAddress !== 'N/A' ? `${tokenAddress.toLowerCase()}_` : '';
-    const pairPart = pairAddress && pairAddress !== 'N/A' ? pairAddress.toLowerCase() : '';
+    // Use the pair's liquidity pool address directly
+    const pairAddress = dex.pair.address.toLowerCase();
     
-    if (!pairPart) {
-      return `https://www.geckoterminal.com/${network}/tokens/${tokenPart.slice(0, -1)}`;
+    // If we have a valid pair address, use it in the URL
+    if (pairAddress && pairAddress !== 'n/a') {
+      return `https://www.geckoterminal.com/${network}/pools/${pairAddress}`;
+    } else {
+      // Fallback to token page if pair address is not available
+      return `https://www.geckoterminal.com/${network}/tokens/${tokenAddress.toLowerCase()}`;
     }
-    
-    return `https://www.geckoterminal.com/${network}/pools/${tokenPart}${pairPart}`;
   };
 
   return (
@@ -52,7 +53,7 @@ const InfoPanel = ({ opportunity }) => {
             <strong>Token Pair Info:</strong>
             <div className="flex flex-col space-y-2 mt-2">
               <a
-                href={getGeckoTerminalUrl(buyDex, opportunity.tokenAddress, buyDex.pair.address)}
+                href={getGeckoTerminalUrl(buyDex, opportunity.tokenAddress)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center text-blue-500 hover:underline"
@@ -61,7 +62,7 @@ const InfoPanel = ({ opportunity }) => {
                 <ExternalLink className="ml-1 h-4 w-4" />
               </a>
               <a
-                href={getGeckoTerminalUrl(sellDex, opportunity.tokenAddress, sellDex.pair.address)}
+                href={getGeckoTerminalUrl(sellDex, opportunity.tokenAddress)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center text-blue-500 hover:underline"
