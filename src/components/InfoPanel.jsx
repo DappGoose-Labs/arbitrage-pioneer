@@ -11,7 +11,7 @@ const InfoPanel = ({ opportunity }) => {
   const sellDex = opportunity.dex1.price < opportunity.dex2.price ? opportunity.dex2 : opportunity.dex1;
 
   return (
-    <Card>
+    <Card className="bg-black text-white">
       <CardHeader>
         <CardTitle>Arbitrage Instructions</CardTitle>
       </CardHeader>

@@ -71,6 +71,7 @@ const ArbitrageApp = () => {
               id="degen-mode"
               checked={degenMode}
               onCheckedChange={handleDegenModeToggle}
+              className="data-[state=checked]:bg-limeGreen"
             />
             <Label htmlFor="degen-mode" className="text-yellow-400 font-bold">!! DEGEN MODE !!</Label>
           </div>

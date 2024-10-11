@@ -36,7 +36,7 @@ const ArbitrageCalculator = ({ opportunity }) => {
 
   if (!opportunity) {
     return (
-      <Card>
+      <Card className="bg-black text-white">
         <CardHeader>
           <CardTitle>Arbitrage Calculator</CardTitle>
         </CardHeader>
@@ -48,7 +48,7 @@ const ArbitrageCalculator = ({ opportunity }) => {
   }
 
   return (
-    <Card>
+    <Card className="bg-black text-white">
       <CardHeader>
         <CardTitle>Arbitrage Calculator</CardTitle>
       </CardHeader>
@@ -60,8 +60,9 @@ const ArbitrageCalculator = ({ opportunity }) => {
             placeholder="Token Quantity"
             value={tokenQuantity}
             onChange={(e) => setTokenQuantity(e.target.value)}
+            className="bg-gray-800 text-white"
           />
-          <Button onClick={calculateProfit}>Calculate Profit</Button>
+          <Button onClick={calculateProfit} className="btn">Calculate Profit</Button>
           {profit !== null && (
             <p className="mt-4 font-semibold">
               Estimated Net Profit: ${profit.toFixed(2)}
