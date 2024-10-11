@@ -81,6 +81,10 @@ const stablecoins = [
   { symbol: 'USDC', address: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v' }, // Solana
 ];
 
+const generateRandomLiquidity = () => {
+  return Math.floor(Math.random() * 1000000) + 100000; // Random liquidity between 100,000 and 1,100,000
+};
+
 export const getArbitrageOpportunities = (prices, degenMode) => {
   console.log('Generating arbitrage opportunities. Prices:', prices);
   const opportunities = [];
@@ -120,7 +124,8 @@ export const getArbitrageOpportunities = (prices, degenMode) => {
               pair: {
                 symbol: stablecoin1.symbol,
                 address: stablecoin1.address
-              }
+              },
+              liquidity: generateRandomLiquidity()
             },
             dex2: {
               name: dex2.name,
@@ -129,7 +134,8 @@ export const getArbitrageOpportunities = (prices, degenMode) => {
               pair: {
                 symbol: stablecoin2.symbol,
                 address: stablecoin2.address
-              }
+              },
+              liquidity: generateRandomLiquidity()
             },
             profitPercent: profitPercent,
           });

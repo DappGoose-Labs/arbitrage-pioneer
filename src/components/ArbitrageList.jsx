@@ -15,6 +15,10 @@ const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
     return profitPercent.toFixed(2);
   };
 
+  const formatLiquidity = (liquidity) => {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(liquidity);
+  };
+
   return (
     <div className="overflow-x-auto">
       <Table>
@@ -35,10 +39,14 @@ const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
             >
               <TableCell>{opp.token}</TableCell>
               <TableCell>
-                {`${opp.dex1.name} on ${opp.dex1.network} - $${formatPrice(opp.dex1.price)} (${formatPrice(opp.dex1.price)} ${opp.dex1.pair.symbol}/${opp.token})`}
+                <div>{`${opp.dex1.name} on ${opp.dex1.network}`}</div>
+                <div>{`$${formatPrice(opp.dex1.price)} (${formatPrice(opp.dex1.price)} ${opp.dex1.pair.symbol}/${opp.token})`}</div>
+                <div className="text-sm text-gray-400">{`Liquidity: ${formatLiquidity(opp.dex1.liquidity)}`}</div>
               </TableCell>
               <TableCell>
-                {`${opp.dex2.name} on ${opp.dex2.network} - $${formatPrice(opp.dex2.price)} (${formatPrice(opp.dex2.price)} ${opp.dex2.pair.symbol}/${opp.token})`}
+                <div>{`${opp.dex2.name} on ${opp.dex2.network}`}</div>
+                <div>{`$${formatPrice(opp.dex2.price)} (${formatPrice(opp.dex2.price)} ${opp.dex2.pair.symbol}/${opp.token})`}</div>
+                <div className="text-sm text-gray-400">{`Liquidity: ${formatLiquidity(opp.dex2.liquidity)}`}</div>
               </TableCell>
               <TableCell>{`${calculateProfitPercent(opp.dex1.price, opp.dex2.price)}%`}</TableCell>
             </TableRow>
