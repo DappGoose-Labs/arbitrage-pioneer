@@ -67,27 +67,27 @@ const ArbitrageApp = () => {
         <div className="flex justify-between items-center mb-4">
           <Button onClick={handleRefresh} className="btn">Refresh Data</Button>
           <div className="flex items-center space-x-2">
+            <Label htmlFor="degen-mode" className="text-yellow-300 font-bold text-lg">!! DEGEN MODE !!</Label>
             <Switch
               id="degen-mode"
               checked={degenMode}
               onCheckedChange={handleDegenModeToggle}
               className="data-[state=checked]:bg-limeGreen"
             />
-            <Label htmlFor="degen-mode" className="text-yellow-400 font-bold">!! DEGEN MODE !!</Label>
           </div>
         </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <ArbitrageList 
-            opportunities={opportunities} 
-            onSelectOpportunity={handleOpportunitySelect}
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <ArbitrageList 
+              opportunities={opportunities} 
+              onSelectOpportunity={handleOpportunitySelect}
+            />
+          </div>
+          <div className="space-y-8">
+            <ArbitrageCalculator opportunity={selectedOpportunity} />
+            <InfoPanel opportunity={selectedOpportunity} />
+          </div>
         </div>
-        <div className="space-y-8">
-          <ArbitrageCalculator opportunity={selectedOpportunity} />
-          <InfoPanel opportunity={selectedOpportunity} />
-        </div>
-      </div>
       </div>
       <DonateModal isOpen={isDonateModalOpen} onClose={() => setIsDonateModalOpen(false)} />
     </div>
