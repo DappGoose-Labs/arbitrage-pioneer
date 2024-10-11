@@ -53,7 +53,7 @@ const ArbitrageApp = () => {
   return (
     <div className="flex flex-col min-h-screen bg-charcoal">
       <div className="container mx-auto px-4 py-8 flex-grow">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4 sticky top-0 bg-charcoal z-10 py-4">
           <Button onClick={handleRefresh} className="btn">Refresh Data</Button>
           <div className="flex items-center space-x-2">
             <Label htmlFor="degen-mode" className="text-yellow-300 font-bold text-lg">!! DEGEN MODE !!</Label>
@@ -80,7 +80,7 @@ const ArbitrageApp = () => {
               onSelectOpportunity={handleOpportunitySelect}
             />
           </div>
-          <div className="space-y-8">
+          <div className="space-y-8 lg:sticky lg:top-20 self-start">
             <ArbitrageCalculator opportunity={selectedOpportunity} />
             <InfoPanel opportunity={selectedOpportunity} />
           </div>
