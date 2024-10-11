@@ -66,9 +66,9 @@ const ArbitrageApp = () => {
           </div>
         </div>
         {degenMode && (
-          <Alert className="mb-4 bg-yellow-900 border-yellow-500">
-            <Skull className="h-4 w-4" />
-            <AlertDescription>
+          <Alert className="mb-4 bg-red-200 border-red-300">
+            <Skull className="h-4 w-4 text-white" />
+            <AlertDescription className="text-white">
               Warning: Degen Mode activated! Prepare for wild rides and potential rekt-age. WAGMI... or not?
             </AlertDescription>
           </Alert>
