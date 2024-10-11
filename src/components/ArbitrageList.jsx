@@ -20,10 +20,10 @@ const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
       <Table>
         <TableHeader>
           <TableRow className="border-b border-lightGrey">
-            <TableHead>Token</TableHead>
-            <TableHead>DEX 1</TableHead>
-            <TableHead>DEX 2</TableHead>
-            <TableHead>Profit %</TableHead>
+            <TableHead className="text-limeGreen">Token</TableHead>
+            <TableHead className="text-limeGreen">DEX 1</TableHead>
+            <TableHead className="text-limeGreen">DEX 2</TableHead>
+            <TableHead className="text-limeGreen">Profit %</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
