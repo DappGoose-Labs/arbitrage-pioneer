@@ -3,17 +3,17 @@ import { useQuery } from '@tanstack/react-query';
 import ArbitrageList from './ArbitrageList';
 import ArbitrageCalculator from './ArbitrageCalculator';
 import InfoPanel from './InfoPanel';
-import DonateModal from './DonateModal';
 import { fetchTokenPrices, getArbitrageOpportunities } from '../utils/priceData';
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Skull } from "lucide-react";
 
 const ArbitrageApp = () => {
   const [opportunities, setOpportunities] = useState([]);
   const [degenMode, setDegenMode] = useState(false);
   const [selectedOpportunity, setSelectedOpportunity] = useState(null);
-  const [isDonateModalOpen, setIsDonateModalOpen] = useState(false);
 
   const { data: prices, isLoading, error, refetch } = useQuery({
     queryKey: ['tokenPrices', degenMode],
@@ -52,18 +52,7 @@ const ArbitrageApp = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-charcoal">
-      <div className="bg-blue-600 text-white py-2 overflow-hidden">
-        <div className="animate-marquee whitespace-nowrap">
-          <span className="inline-block px-4">
-            This tool uses real-time data from leading sources; and is provided free of charge. Donations are of course accepted and appreciated!
-          </span>
-        </div>
-      </div>
       <div className="container mx-auto px-4 py-8 flex-grow">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Real-time Arbitrage Opportunities</h1>
-          <Button onClick={() => setIsDonateModalOpen(true)} className="btn">Donate</Button>
-        </div>
         <div className="flex justify-between items-center mb-4">
           <Button onClick={handleRefresh} className="btn">Refresh Data</Button>
           <div className="flex items-center space-x-2">
@@ -76,6 +65,14 @@ const ArbitrageApp = () => {
             />
           </div>
         </div>
+        {degenMode && (
+          <Alert className="mb-4 bg-yellow-900 border-yellow-500">
+            <Skull className="h-4 w-4" />
+            <AlertDescription>
+              Warning: Degen Mode activated! Prepare for wild rides and potential rekt-age. WAGMI... or not?
+            </AlertDescription>
+          </Alert>
+        )}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <ArbitrageList 
@@ -89,7 +86,6 @@ const ArbitrageApp = () => {
           </div>
         </div>
       </div>
-      <DonateModal isOpen={isDonateModalOpen} onClose={() => setIsDonateModalOpen(false)} />
     </div>
   );
 };
