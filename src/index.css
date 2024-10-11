@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Roboto+Slab:wght@300&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -71,6 +73,13 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-charcoal text-white font-body;
   }
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-limeGreen font-heading font-medium;
+  }
+}
+
+.btn {
+  @apply bg-black text-limeGreen border border-limeGreen px-4 py-2 rounded hover:bg-limeGreen hover:text-black transition-colors;
 }

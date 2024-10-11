@@ -19,7 +19,7 @@ const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
     <div className="overflow-x-auto">
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="border-b border-lightGrey">
             <TableHead>Token</TableHead>
             <TableHead>DEX 1</TableHead>
             <TableHead>DEX 2</TableHead>
@@ -30,7 +30,7 @@ const ArbitrageList = ({ opportunities, onSelectOpportunity }) => {
           {opportunities.map((opp, index) => (
             <TableRow 
               key={index} 
-              className="cursor-pointer hover:bg-gray-100"
+              className="cursor-pointer hover:bg-gray-700 border-b border-lightGrey"
               onClick={() => onSelectOpportunity(opp)}
             >
               <TableCell>{opp.token}</TableCell>

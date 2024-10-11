@@ -51,7 +51,7 @@ const ArbitrageApp = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-charcoal">
       <div className="bg-blue-600 text-white py-2 overflow-hidden">
         <div className="animate-marquee whitespace-nowrap">
           <span className="inline-block px-4">
@@ -62,17 +62,17 @@ const ArbitrageApp = () => {
       <div className="container mx-auto px-4 py-8 flex-grow">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Real-time Arbitrage Opportunities</h1>
-          <Button onClick={() => setIsDonateModalOpen(true)}>Donate</Button>
+          <Button onClick={() => setIsDonateModalOpen(true)} className="btn">Donate</Button>
         </div>
         <div className="flex justify-between items-center mb-4">
-          <Button onClick={handleRefresh}>Refresh Data</Button>
+          <Button onClick={handleRefresh} className="btn">Refresh Data</Button>
           <div className="flex items-center space-x-2">
             <Switch
               id="degen-mode"
               checked={degenMode}
               onCheckedChange={handleDegenModeToggle}
             />
-            <Label htmlFor="degen-mode">Degen Mode</Label>
+            <Label htmlFor="degen-mode" className="text-yellow-400 font-bold">!! DEGEN MODE !!</Label>
           </div>
         </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

@@ -51,6 +51,9 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        charcoal: "#333333",
+        limeGreen: "#32CD32",
+        lightGrey: "#D3D3D3",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -75,6 +78,10 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "marquee": 'marquee 20s linear infinite',
+      },
+      fontFamily: {
+        heading: ['Inconsolata', 'monospace'],
+        body: ['Roboto Slab', 'serif'],
       },
     },
   },
