@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ArbitrageList from './ArbitrageList';
 import ArbitrageCalculator from './ArbitrageCalculator';
 import InfoPanel from './InfoPanel';
-import { fetchTokenPrices, getArbitrageOpportunities } from '../utils/priceData';
+import { getFormattedArbitrageData } from '../utils/api';
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -15,28 +16,23 @@ const ArbitrageApp = () => {
   const [degenMode, setDegenMode] = useState(false);
   const [selectedOpportunity, setSelectedOpportunity] = useState(null);
 
-  const { data: prices, isLoading, error, refetch } = useQuery({
-    queryKey: ['tokenPrices', degenMode],
-    queryFn: () => fetchTokenPrices([
-      'bitcoin', 'ethereum', 'binancecoin', 'matic-network', 'avalanche-2',
-      'arbitrum', 'zksync-era', 'bald', 'optimism', 'solana'
-    ], degenMode),
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['arbitrageData', degenMode],
+    queryFn: () => getFormattedArbitrageData(degenMode),
     refetchInterval: 30000, // Refetch every 30 seconds
     retry: 3,
     onError: (error) => {
-      console.error('Error fetching token prices:', error);
+      console.error('Error fetching arbitrage data:', error);
     },
   });
 
   useEffect(() => {
-    if (prices) {
-      console.log('Received prices:', prices);
-      const newOpportunities = getArbitrageOpportunities(prices, degenMode);
-      console.log('New opportunities:', newOpportunities);
-      setOpportunities(newOpportunities);
-      setSelectedOpportunity(newOpportunities[0] || null);
+    if (data) {
+      console.log('Received arbitrage data:', data);
+      setOpportunities(data);
+      setSelectedOpportunity(data[0] || null);
     }
-  }, [prices, degenMode]);
+  }, [data, degenMode]);
 
   const handleRefresh = () => {
     refetch();
