@@ -1,3 +1,4 @@
+
 import { HomeIcon } from "lucide-react";
 import Index from "./pages/Index.jsx";
 
